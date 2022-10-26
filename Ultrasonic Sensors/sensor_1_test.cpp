@@ -36,7 +36,7 @@ void loop() {
   duration = pulseIn(ePin, HIGH); //in microsecond
  
   // Convert the time into a distance 
-  //##Distance = (Time x 3*10^8m/sec ) / 2(sound has to travel back and forth.)
+  //##Distance = (Time x speed of sound in cm/ms ) / 2(sound has to travel back and forth.)
   cm = (duration/2)* 0.0343;     // Divide by 29.1 or multiply by 0.0343
   
   Serial.print(cm);
