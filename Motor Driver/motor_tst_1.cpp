@@ -30,9 +30,23 @@ AF_DCMotor M3(3);
 AF_DCMotor M4(4);
 int i = 0;
 
+/* Declaring Middle Ultrasonic Pins */
+#define Mtrig A0;
+#define Mecho A1;
+int Mduration = 0, Mdistance = 0;
+
+/* Declaring Right Ultrasonic Pins */
+#define Rtrig A2;
+#define Recho A3;
+int Rduration = 0, Rdistance = 0;
+
+/* Declaring left Ultrasonic Pins */
+#define Ltrig A4;
+#define Lecho A5;
+int Lduration = 0, Ldistance = 0;
+
 void setup()
 {
-    Serial.begin(9600); // Settng baudrate
 
     M1.setSpeed(255); // Motor Maximum Speed Configured.
     M1.run(RELEASE);  // Motor is Configured in Release mode.
@@ -42,10 +56,64 @@ void setup()
     M3.run(RELEASE);
     M4.setSpeed(255);
     M4.run(RELEASE);
+
+    /* Configure input and output port of sensors */
+    pinMode(Mtrig, OUTPUT);
+    pinMode(Mecho, INPUT);
+    // Right
+    pinMode(Rtrig, OUTPUT);
+    pinMode(Recho, INPUT);
+    // Left
+    pinMode(Ltrig, OUTPUT);
+    pinMode(Lecho, INPUT);
+    Serial.begin(9600); // Settng baudrate
 }
 
 void loop()
 {
+
+    //Middle ultrasonic 
+    digitalWrite(Mtrig, LOW);
+    delayMicroseconds(5);
+    digitalWrite(Mtrig, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(Mtrig, LOW);
+
+    // Read the signal from the sensor
+    pinMode(Mecho, INPUT);
+    Mduration = pulseIn(Mecho, HIGH); // in microsecond
+
+    // Convert the time into a distance
+    //##Distance = (Time x speed of sound in cm/ms ) / 2(sound has to travel back and forth.)
+    Mdistance = (Mduration / 2) * 0.0343; // Divide by 29.1 or multiply by 0.0343
+
+    digitalWrite(Rtrig, LOW);
+    delayMicroseconds(5);
+    digitalWrite(Rtrig, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(Rtrig, LOW);
+
+    // Read the signal from the sensor
+    pinMode(Recho, INPUT);
+    Rduration = pulseIn(Recho, HIGH); // in microsecond
+
+    // Convert the time into a distance
+    //##Distance = (Time x speed of sound in cm/ms ) / 2(sound has to travel back and forth.)
+    Rdistance = (Rduration / 2) * 0.0343; // Divide by 29.1 or multiply by 0.0343
+
+    digitalWrite(Ltrig, LOW);
+    delayMicroseconds(5);
+    digitalWrite(Ltrig, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(Ltrig, LOW);
+
+    // Read the signal from the sensor
+    pinMode(Mecho, INPUT);
+    Lduration = pulseIn(Lecho, HIGH); // in microsecond
+
+    // Convert the time into a distance
+    //##Distance = (Time x speed of sound in cm/ms ) / 2(sound has to travel back and forth.)
+    Ldistance = (Lduration / 2) * 0.0343; // Divide by 29.1 or multiply by 0.0343
 }
 
 void moveForward()
@@ -111,6 +179,7 @@ void moveBack()
     M2.setSpeed(50);
     M3.setSpeed(50);
     M4.setSpeed(50);
+    while ()
 
     // // To avoid shock on start we accelerate it slowely.
     // for (i = 0; i < 100; i++)
