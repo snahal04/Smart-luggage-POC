@@ -77,34 +77,35 @@ void loop()
 
     //######################################################
 
-    if ((Ldistance < 120 && Rdistance < 120 && count == 0) || Mdistance < 100 && Mdistance > 50)
+    if ((Ldistance < 120 && Rdistance < 120 && count == 0) || Mdistance < 100 && Mdistance > 50) // count = 0 means first start so accelerate then move constant
     {
         count = 1;
         moveForward();
         velocity();
     }
 
-    else if ((Mdistance < 50 || Ldistance < 50 || Rdistance < 50) && count > 0)
+    else if ((Mdistance < 50 || Ldistance < 50 || Rdistance < 50) && count > 0) // when robot is moving and person moves back withn 50 cm then robot moves back
     {
         count = 0;
         moveBack();
     }
-
-    if (Ldistance > 120 && Rdistance > 120 && Mdistance > 100)
-    {
-    }
-
-    if (Ldistance < 120 && Rdistance < 120 && Mdistance < 100 && count == 1)
+    else if (Ldistance < 120 && Rdistance < 120 && Mdistance < 100 && count == 1) // constant movement
     {
         count = 2;
         velocity();
     }
 
+//     if (Ldistance > 120 && Rdistance > 120 && Mdistance > 100) // Human is 120 cm far from robot then robot will first speeds up fro 3 second and still if it not gets in range then stops
+//     {
+//         stop();
+//     }
+
+
     if (Ldistance > 120 && Rdistance > 120 && Mdistance > 100 && count == 2)
     {
         stop();
     }
-    else if (Ldistance == 50 && Rdistance == 50 && Mdistance == 50 && count == 1)
+    else if (Ldistance == 50 && Rdistance == 50 && Mdistance == 50 )
     {
         count = 0;
         instantstop();
